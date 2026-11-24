@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Clean Days</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #090303;
+  color: white;
+  font-family: Arial, sans-serif;
+
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  width: 92%;
+  max-width: 420px;
+
+  padding: 32px 24px;
+
+  text-align: center;
+
+  background: #160707;
+
+  border: 1px solid #4a1111;
+  border-radius: 28px;
+
+  box-shadow:
+    0 0 40px rgba(120, 0, 0, 0.25);
+}
+
+h1 {
+  font-size: 32px;
+  margin: 0 0 25px;
+
+  color: #ff4d4d;
+}
+
+.days {
+  font-size: 110px;
+  font-weight: bold;
+
+  line-height: 1;
+
+  margin: 10px 0;
+
+  color: white;
+
+  text-shadow:
+    0 0 25px rgba(255, 0, 0, 0.25);
+}
+
+p {
+  color: #a87575;
+  font-size: 18px;
+
+  margin: 10px 0 10px;
+}
+
+.status {
+  display: inline-block;
+
+  margin: 5px 0 10px;
+
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  background: #250b0b;
+
+  border: 1px solid #651818;
+
+  color: #ff4d4d;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  letter-spacing: 1px;
+
+  box-shadow:
+    0 0 15px rgba(255, 0, 0, 0.15);
+}
+
+#quote {
+  color: #c98b8b;
+
+  font-size: 14px;
+
+  font-style: italic;
+
+  margin: 5px 0 25px;
+
+  line-height: 1.5;
+}
+
+.stats {
+  display: flex;
+
+  gap: 12px;
+
+  margin: 25px 0;
+}
+
+.stat {
+  flex: 1;
+
+  background: #250b0b;
+
+  padding: 18px 10px;
+
+  border-radius: 16px;
+
+  border: 1px solid #451313;
+}
+
+.stat strong {
+  display: block;
+
+  font-size: 28px;
+
+  color: #ff4d4d;
+}
+
+.stat span {
+  display: block;
+
+  color: #9b6b6b;
+
+  font-size: 13px;
+
+  margin-top: 5px;
+}
+
+.milestone {
+  background: #250b0b;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  margin: 25px 0;
+
+  text-align: left;
+
+  border: 1px solid #451313;
+}
+
+.milestone-title {
+  color: #9b6b6b;
+
+  font-size: 13px;
+
+  margin-bottom: 8px;
+}
+
+#nextMilestone {
+  font-size: 26px;
+
+  font-weight: bold;
+
+  color: #ff4d4d;
+}
+
+.progress {
+  height: 10px;
+
+  background: #3a1515;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  margin: 15px 0 10px;
+}
+
+#progressBar {
+  height: 100%;
+
+  width: 0%;
+
+  background: #d92f2f;
+
+  transition: width 0.3s;
+
+  box-shadow:
+    0 0 12px rgba(255, 40, 40, 0.6);
+}
+
+#milestoneText {
+  color: #9b6b6b;
+
+  font-size: 13px;
+}
+
+label {
+  display: block;
+
+  text-align: left;
+
+  color: #b88989;
+
+  font-size: 14px;
+
+  margin-top: 20px;
+}
+
+input {
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 8px;
+
+  border-radius: 12px;
+
+  border: 1px solid #521818;
+
+  background: #210909;
+
+  color: white;
+
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+
+  padding: 15px;
+
+  margin-top: 10px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #c92b2b;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e23838;
+}
+
+button + button {
+  background: #310d0d;
+
+  color: #ff6b6b;
+
+  border: 1px solid #5a1717;
+}
+
+h2 {
+  margin-top: 35px;
+
+  font-size: 20px;
+
+  color: #ff4d4d;
+}
+
+#history {
+  margin-top: 15px;
+}
+
+.history-item {
+  background: #250b0b;
+
+  padding: 15px;
+
+  margin-top: 10px;
+
+  border-radius: 12px;
+
+  text-align: left;
+
+  border: 1px solid #451313;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>Clean Days</h1>
+
+  <div class="days">0</div>
+
+  <p>days clean</p>
+
+  <div class="status">
+    ● STREAK ACTIVE
+  </div>
+
+  <div id="quote">
+    Keep going. One day at a time.
+  </div>
+
+  <div class="stats">
+
+    <div class="stat">
+      <strong id="current">0</strong>
+      <span>Current</span>
+    </div>
+
+    <div class="stat">
+      <strong id="longest">0</strong>
+      <span>Longest</span>
+    </div>
+
+  </div>
+
+  <div class="milestone">
+
+    <div class="milestone-title">
+      Next milestone
+    </div>
+
+    <div id="nextMilestone">
+      7 days
+    </div>
+
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+
+    <div id="milestoneText">
+      7 days to go
+    </div>
+
+  </div>
+
+  <label for="startDate">
+    Start date
+  </label>
+
+  <input
+    type="date"
+    id="startDate"
+  >
+
+  <button onclick="setStartDate()">
+    Set Start Date
+  </button>
+
+  <button onclick="resetTracker()">
+    Reset Streak
+  </button>
+
+  <h2>History</h2>
+
+  <div id="history">
+    No previous streaks.
+  </div>
+
+</div>
+
+<script>
+
+function getDays(startDate) {
+
+  const start = new Date(startDate);
+  const today = new Date();
+
+  start.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const difference = today - start;
+
+  return Math.floor(
+    difference /
+    (1000 * 60 * 60 * 24)
+  );
+}
+
+
+function getHistory() {
+
+  return JSON.parse(
+    localStorage.getItem("streakHistory") || "[]"
+  );
+
+}
+
+
+function getLongestStreak() {
+
+  const history = getHistory();
+
+  let longest = 0;
+
+  history.forEach(function(streak) {
+
+    if (streak.days > longest) {
+      longest = streak.days;
+    }
+
+  });
+
+  const current =
+    localStorage.getItem("cleanStartDate");
+
+  if (current) {
+
+    const currentDays =
+      getDays(current);
+
+    if (currentDays > longest) {
+      longest = currentDays;
+    }
+
+  }
+
+  return longest;
+
+}
+
+
+function setStartDate() {
+
+  const input =
+    document.getElementById("startDate");
+
+  if (!input.value) {
+
+    alert("Please choose a start date.");
+
+    return;
+
+  }
+
+  localStorage.setItem(
+    "cleanStartDate",
+    input.value
+  );
+
+  updateCounter();
+
+}
+
+
+function updateCounter() {
+
+  const savedDate =
+    localStorage.getItem("cleanStartDate");
+
+  let currentDays = 0;
+
+  if (savedDate) {
+
+    currentDays =
+      getDays(savedDate);
+
+  }
+
+  document.querySelector(".days")
+    .textContent = currentDays;
+
+  document.getElementById("current")
+    .textContent = currentDays;
+
+  document.getElementById("longest")
+    .textContent =
+    getLongestStreak();
+
+  updateMilestone(currentDays);
+
+  updateQuote(currentDays);
+
+  showHistory();
+
+}
+
+
+function updateMilestone(days) {
+
+  const milestones = [
+    7,
+    30,
+    90,
+    180,
+    365
+  ];
+
+  let next =
+    milestones[milestones.length - 1];
+
+  for (
+    let i = 0;
+    i < milestones.length;
+    i++
+  ) {
+
+    if (days < milestones[i]) {
+
+      next = milestones[i];
+
+      break;
+
+    }
+
+  }
+
+  document.getElementById(
+    "nextMilestone"
+  ).textContent =
+    next + " days";
+
+
+  const previous =
+    milestones
+      .filter(function(m) {
+
+        return m <= days;
+
+      })
+      .pop() || 0;
+
+
+  const range =
+    next - previous;
+
+
+  const progress =
+    ((days - previous) / range) * 100;
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    Math.min(progress, 100) + "%";
+
+
+  const remaining =
+    next - days;
+
+
+  if (remaining <= 0) {
+
+    document.getElementById(
+      "milestoneText"
+    ).textContent =
+      "Milestone reached!";
+
+  } else {
+
+    document.getElementById(
+      "milestoneText"
+    ).textContent =
+      remaining +
+      " days to go";
+
+  }
+
+}
+
+
+function updateQuote(days) {
+
+  const quote =
+    document.getElementById("quote");
+
+  if (days < 7) {
+
+    quote.textContent =
+      "Keep going. One day at a time.";
+
+  } else if (days < 30) {
+
+    quote.textContent =
+      "You're building something strong.";
+
+  } else if (days < 90) {
+
+    quote.textContent =
+      "Keep going. You've come a long way.";
+
+  } else if (days < 365) {
+
+    quote.textContent =
+      "Your consistency is becoming a habit.";
+
+  } else {
+
+    quote.textContent =
+      "One year. That's incredible.";
+
+  }
+
+}
+
+
+function resetTracker() {
+
+  const savedDate =
+    localStorage.getItem("cleanStartDate");
+
+  if (!savedDate) {
+    return;
+  }
+
+  const days =
+    getDays(savedDate);
+
+  if (days > 0) {
+
+    const history =
+      getHistory();
+
+    history.push({
+
+      start: savedDate,
+
+      days: days
+
+    });
+
+    localStorage.setItem(
+      "streakHistory",
+      JSON.stringify(history)
+    );
+
+  }
+
+  localStorage.removeItem(
+    "cleanStartDate"
+  );
+
+  document.getElementById(
+    "startDate"
+  ).value = "";
+
+  updateCounter();
+
+}
+
+
+function showHistory() {
+
+  const historyElement =
+    document.getElementById("history");
+
+  const history =
+    getHistory();
+
+  if (history.length === 0) {
+
+    historyElement.textContent =
+      "No previous streaks.";
+
+    return;
+
+  }
+
+  historyElement.innerHTML = "";
+
+  history
+    .slice()
+    .reverse()
+    .forEach(function(streak) {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "history-item";
+
+      item.innerHTML =
+        "<strong>" +
+        streak.days +
+        " days</strong>";
+
+      historyElement.appendChild(item);
+
+    });
+
+}
+
+
+updateCounter();
+
+</script>
+
+</body>
+</html>
